@@ -57,7 +57,7 @@ class UI {
 
   //calcualte total expenses
   totalExpenses() {
-    let total = this.itemList.reduce(function(init, item) {
+    let total = this.itemList.reduce(function (init, item) {
       return init + item.amount;
     }, 0);
     this.expenseAmount.textContent = total;
@@ -125,6 +125,36 @@ class UI {
     this.expenseList.appendChild(div);
   }
 
+  //edit expense
+  editExpense(element) {
+    let id = parseInt(element.dataset.id);
+
+    let parent = element.parentElement.parentElement.parentElement;
+
+    // remove this parentElement from DOM
+    this.expenseList.removeChild(parent);
+
+    let expense = this.itemList.filter(function (item) {
+      return item.id === id;
+    });
+    //show expense
+    this.expenseInput.value = expense[0].title;
+    this.amountInput.value = expense[0].amount;
+
+    // now remove from array
+    let tempList = this.itemList.filter(function (item) {
+      return item.id !== id;
+    })
+
+    this.itemList = tempList;
+    this.showBalance();
+
+
+  }
+
+  //delete expense
+  deleteExpense(element) { }
+
 }
 
 function eventListeners() {
@@ -147,7 +177,17 @@ function eventListeners() {
   });
 
   //expense delete event
-  expenseList.addEventListener('click', function () { });
+  expenseList.addEventListener('click', function (event) {
+
+    if (event.target.parentElement.classList.contains('edit-icon')) {
+      ui.editExpense(event.target.parentElement);
+    }
+
+    if (event.target.parentElement.classList.contains('delete-icon')) {
+      ui.deleteExpense(event.target.parentElement);
+    }
+
+  });
 
 
 }
