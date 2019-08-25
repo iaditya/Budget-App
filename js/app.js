@@ -144,7 +144,7 @@ class UI {
     // now remove from array
     let tempList = this.itemList.filter(function (item) {
       return item.id !== id;
-    })
+    });
 
     this.itemList = tempList;
     this.showBalance();
@@ -153,7 +153,21 @@ class UI {
   }
 
   //delete expense
-  deleteExpense(element) { }
+  deleteExpense(element) {
+    let id = parseInt(element.dataset.id);
+
+    let parent = element.parentElement.parentElement.parentElement;
+
+    // remove this parentElement from DOM
+    this.expenseList.removeChild(parent);
+
+    // now remove from array
+    this.itemList = this.itemList.filter(function (item) {
+      return item.id !== id;
+    });
+
+    this.showBalance();
+  }
 
 }
 
@@ -188,8 +202,6 @@ function eventListeners() {
     }
 
   });
-
-
 }
 
 
